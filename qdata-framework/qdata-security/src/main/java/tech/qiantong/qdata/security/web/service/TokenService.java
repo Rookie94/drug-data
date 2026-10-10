@@ -18,6 +18,8 @@
 
 package tech.qiantong.qdata.security.web.service;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import eu.bitwalker.useragentutils.UserAgent;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -91,8 +93,20 @@ public class TokenService
                 // Parse corresponding permissions and user information
                 String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
-                LoginUser user = redisCache.getCacheObject(userKey);
-                return user;
+                Object cacheObj = redisCache.getCacheObject(userKey);
+                if (cacheObj instanceof LoginUser)
+                {
+                    return (LoginUser) cacheObj;
+                }
+                else if (cacheObj instanceof JSONObject)
+                {
+                    return ((JSONObject) cacheObj).toJavaObject(LoginUser.class);
+                }
+                else if (cacheObj != null)
+                {
+                    return JSON.parseObject(JSON.toJSONString(cacheObj), LoginUser.class);
+                }
+                return null;
             }
             catch (Exception e)
             {

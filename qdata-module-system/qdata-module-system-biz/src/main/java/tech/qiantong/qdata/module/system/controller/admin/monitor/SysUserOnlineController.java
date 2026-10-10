@@ -18,6 +18,8 @@
 
 package tech.qiantong.qdata.module.system.controller.admin.monitor;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +63,44 @@ public class SysUserOnlineController extends BaseController
         List<SysUserOnline> userOnlineList = new ArrayList<SysUserOnline>();
         for (String key : keys)
         {
-            LoginUser user = redisCache.getCacheObject(key);
+            Object rawObj = redisCache.getCacheObject(key);
+            if (rawObj == null)
+            {
+                continue;
+            }
+            LoginUser user = null;
+            if (rawObj instanceof LoginUser)
+            {
+                user = (LoginUser) rawObj;
+            }
+            else if (rawObj instanceof JSONObject)
+            {
+                try
+                {
+                    user = ((JSONObject) rawObj).toJavaObject(LoginUser.class);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                try
+                {
+                    user = JSON.parseObject(JSON.toJSONString(rawObj), LoginUser.class);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+
+            if (user == null || user.getUser() == null)
+            {
+                continue;
+            }
+
             if (StringUtils.isNotEmpty(ipaddr) && StringUtils.isNotEmpty(userName))
             {
                 userOnlineList.add(userOnlineService.selectOnlineByInfo(ipaddr, userName, user));
@@ -70,7 +109,7 @@ public class SysUserOnlineController extends BaseController
             {
                 userOnlineList.add(userOnlineService.selectOnlineByIpaddr(ipaddr, user));
             }
-            else if (StringUtils.isNotEmpty(userName) && StringUtils.isNotNull(user.getUser()))
+            else if (StringUtils.isNotEmpty(userName))
             {
                 userOnlineList.add(userOnlineService.selectOnlineByUserName(userName, user));
             }
