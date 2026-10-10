@@ -156,6 +156,7 @@ public class SecurityConfig
                                     "/syncData/**",
                                     "/sys/**",
                                     "/oauth2/**",
+                                    "/sso/**",
                                     // Scheduler whitelist
                                     "/mc/taskExecutor/runExecuteTask/**"
                             ).permitAll()

@@ -26,7 +26,8 @@ package tech.qiantong.qdata.module.system.enums.auth;
 public enum AuthProductEnums {
     ANIVIA(0, "Anivia Framework"),
     ALIPAY(1,"Alipay"),
-    WECHAT(2,"WeChat");
+    WECHAT(2,"WeChat"),
+    YITILIANGYI(3, "一体两翼管理台");
 
     public final Integer code;
     public final String info;

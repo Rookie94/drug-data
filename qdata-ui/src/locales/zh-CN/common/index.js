@@ -152,7 +152,7 @@ export default {
     selectRecord: '请选择要删除的数据'
   },
   html: {
-    appTitle: 'qData开源数据中台'
+    appTitle: '数据中台'
   },
   // show
   display: {

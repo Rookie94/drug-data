@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import {codeLogin} from "@/api/system/sso-auth.js";
+import {codeLogin, ssoCodeLogin} from "@/api/system/sso-auth.js";
 import useDefaultLang from "@/composables/useDefaultLang";
 import useUserStore from '@/store/system/user.js'
 
@@ -37,12 +37,13 @@ export default {
   },
   setup() {
     const { td } = useDefaultLang();
-    return { t };
+    return { td };
   },
   data() {
     return {
       code: null,
-      fullPath: ""
+      fullPath: "",
+      source: null
     };
   },
   created() {
@@ -52,9 +53,11 @@ export default {
   beforeRouteEnter(to, from, next) {
     const code = to.query.code
     const fullPath = to.query.state
+    const source = to.query.source
     next(vm => {
       vm.code = code
       vm.fullPath = fullPath
+      vm.source = source
       vm.checkCode()
     });
   },
@@ -62,21 +65,25 @@ export default {
     // Detect code value
     checkCode() {
       if (this.code != null && this.code !== '') {
-        // todo Use authorization code to obtain Token
-        codeLogin(this.code).then(res => {
-          console.log("Token :" + res.msg)
+        const isFromYiti = this.source === 'yitiliangyi'
+        const loginApi = isFromYiti ? ssoCodeLogin : codeLogin
+
+        loginApi(this.code).then(res => {
+          const token = res.data || res.msg
+          console.log("SSO Token acquired successfully")
 
           // Call the login method of action
-          userStore.setToken(res.msg).then(() => {
+          userStore.setToken(token).then(() => {
             this.$router.push({path: this.fullPath === "" ? "/index" : this.fullPath})
           })
         }).catch(err => {
-          console.log(err)
+          console.error("SSO Login error: ", err)
+          const errMsg = (err && (err.msg || err.message)) || (typeof err === 'string' ? err : '单点登录失败，请重试')
           // Exit the system status
-          if (confirm(err)) {
+          if (confirm(errMsg)) {
             // Execute logout logic
             useUserStore().logOut().then(() => {
-              location.href = '/index'
+              location.href = '/login'
             })
           }
         })

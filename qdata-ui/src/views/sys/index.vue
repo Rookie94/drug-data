@@ -18,10 +18,6 @@
 
 <template>
   <div class="app-container stagingIndex">
-
-    <!-- Important reminder for presentation environment -->
-    <GuideTip tip-id="index" />
-
     <el-row :gutter="15">
       <el-col :xs="24" :sm="24" :md="18" :lg="18" class="home-gutter">
         <div class="userInfo module-1">
@@ -175,61 +171,6 @@
       </el-col>
     </el-row>
 
-    <!-- License agreement pop-up window -->
-    <el-dialog
-      v-model="licenseDialogVisible"
-      :title="td('common.license.title')"
-      :close-on-click-modal="false"
-      :show-close="false"
-      @close="handleLicenseClose"
-    >
-      <div class="license-content">
-        <p v-for="item in tm('common.license.text.intro')" :key="item" class="license-paragraph">
-          {{ item }}
-        </p>
-
-        <div
-          v-for="(item, index) in tm('common.license.text.terms')"
-          :key="item.title"
-          class="license-term"
-        >
-          <div class="license-term-title">
-            <span class="license-term-index">{{ index + 1 }}</span>
-            <span>{{ item.title }}</span>
-          </div>
-          <p v-for="desc in item.desc" :key="desc" class="license-term-desc">
-            {{ desc }}
-          </p>
-        </div>
-
-        <div class="license-notice">
-          <span>{{ tm('common.license.text.notice').before }}</span>
-          <a
-            :href="tm('common.license.text.notice').link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ tm('common.license.text.notice').linkText }}
-          </a>
-          <span>{{ tm('common.license.text.notice').after }}</span>
-        </div>
-
-        <p v-for="item in tm('common.license.text.footer')" :key="item" class="license-footer-text">
-          {{ item }}
-        </p>
-      </div>
-      <template #footer>
-        <el-button @click="toPolicy">{{ td('common.button.commercialAuthorization') }}</el-button>
-        <el-button
-          type="primary"
-          class="license-aware-btn"
-          :disabled="licenseCountdown > 0"
-          @click="handleLicenseClose"
-        >
-          {{ licenseCountdown > 0 ? `${td('common.button.aware')} (${licenseCountdown}s)` : td('common.button.aware') }}
-        </el-button>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -310,61 +251,6 @@ const getAssetsFile = (url) => {
 
 const carousel = ref(null);
 
-// License pop-up window logic
-const LICENSE_CACHE_KEY = 'qdata_license_acknowledged';
-const LICENSE_COUNTDOWN_SECONDS = 10;
-const licenseDialogVisible = ref(false);
-const licenseCountdown = ref(0);
-let licenseCountdownTimer = null;
-
-function clearLicenseCountdown() {
-  if (licenseCountdownTimer) {
-    clearInterval(licenseCountdownTimer);
-    licenseCountdownTimer = null;
-  }
-}
-
-function startLicenseCountdown() {
-  clearLicenseCountdown();
-  licenseCountdown.value = LICENSE_COUNTDOWN_SECONDS;
-  licenseCountdownTimer = setInterval(() => {
-    if (licenseCountdown.value <= 1) {
-      clearLicenseCountdown();
-      licenseCountdown.value = 0;
-      return;
-    }
-
-    licenseCountdown.value -= 1;
-  }, 1000);
-}
-
-/**
- * Check whether the user has agreed to the License agreement
- */
-function checkLicense() {
-  const acknowledged = localStorage.getItem(LICENSE_CACHE_KEY);
-  if (!acknowledged) {
-    licenseDialogVisible.value = true;
-    startLicenseCountdown();
-  }
-}
-
-/**
- * Handle License pop-up window closing event
- * Record that the user has agreed to the License agreement
- */
-function handleLicenseClose() {
-  clearLicenseCountdown();
-  localStorage.setItem(LICENSE_CACHE_KEY, 'true');
-  licenseDialogVisible.value = false;
-}
-
-/**
- * Jump to License agreement page
- */
-function toPolicy() {
-  window.open("https://community.qdata.tech/business/policy.html");
-}
 
 const prevSlide = () => {
   carousel.value.prev();
@@ -1044,7 +930,6 @@ onMounted(() => {
   initModule6();
   initModule8();
   getxljtcont();
-  checkLicense();
   instance.appContext.config.globalProperties.$bus.on(
     "getsidebarStatus",
     () => {

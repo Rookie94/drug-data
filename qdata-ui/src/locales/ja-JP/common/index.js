@@ -158,7 +158,7 @@ export default {
     selectRecord: '削除するデータを選択してください'
   },
   html: {
-    appTitle: 'qDataオープンソースデータプラットフォーム'
+    appTitle: 'データプラットフォーム'
   },
   // ルール
   rules: {

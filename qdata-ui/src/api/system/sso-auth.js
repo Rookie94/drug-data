@@ -36,3 +36,14 @@ export function loginOut(userId) {
         method: 'post'
     })
 }
+
+// 一体两翼 SSO 单点登录
+export function ssoCodeLogin(code) {
+    return request({
+        url: '/oauth2/sso/codeLogin?code=' + encodeURIComponent(code),
+        headers: {
+            isToken: false
+        },
+        method: 'post'
+    })
+}

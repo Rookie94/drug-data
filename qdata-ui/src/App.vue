@@ -65,7 +65,6 @@ onMounted(() => {
   nextTick(() => {
     // Initialize theme style
     handleThemeStyle(useSettingsStore().theme);
-    printConsoleBanner();
   });
 });
 </script>

@@ -38,6 +38,12 @@ import tech.qiantong.qdata.module.system.dal.dataobject.auth.RelUserAuthProductD
 import tech.qiantong.qdata.module.system.enums.auth.AuthProductEnums;
 import tech.qiantong.qdata.module.system.service.ISysUserService;
 import tech.qiantong.qdata.module.system.service.auth.IRelUserAuthProductService;
+import java.util.Map;
+import tech.qiantong.qdata.common.core.redis.RedisCache;
+import tech.qiantong.qdata.common.utils.SecurityUtils;
+import tech.qiantong.qdata.common.utils.uuid.IdUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import tech.qiantong.qdata.module.system.dal.mapper.auth.RelUserAuthProductMapper;
 import tech.qiantong.qdata.redis.service.IRedisService;
 import tech.qiantong.qdata.security.web.service.SysPermissionService;
 import tech.qiantong.qdata.security.web.service.TokenService;
@@ -64,6 +70,10 @@ public class AuthController {
     private IRedisService redisService;
     @Autowired
     private IRelUserAuthProductService userAuthProductService;
+    @Autowired
+    private RelUserAuthProductMapper relUserAuthProductMapper;
+    @Autowired
+    private RedisCache redisCache;
 
     @Value("${oauth2.redis-prefix}")
     private String redisPrefix;
@@ -212,10 +222,10 @@ public class AuthController {
      */
     private SysUser getUserByIdHubId(Long idHubId) {
         // Auth platform association
-        RelUserAuthProductDO authInfo = userAuthProductService.lambdaQuery()
-                .eq(RelUserAuthProductDO::getUserId, idHubId)
-                .eq(RelUserAuthProductDO::getAuthProductType, AuthProductEnums.ANIVIA.code)
-                .one();
+        LambdaQueryWrapper<RelUserAuthProductDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(RelUserAuthProductDO::getUserId, idHubId)
+                .eq(RelUserAuthProductDO::getAuthProductType, AuthProductEnums.ANIVIA.code);
+        RelUserAuthProductDO authInfo = relUserAuthProductMapper.selectOne(wrapper);
 
         if (authInfo != null) {
             return userService.selectUserById(authInfo.getUserId());
@@ -272,5 +282,135 @@ public class AuthController {
         System.out.println("response: " + so);
 
         return AjaxResult.success(so);
+    }
+
+    /**
+     * 一体两翼 SSO 单点登录：支持无感自动建号（JIT Provisioning）
+     */
+    @RequestMapping(value = {"/sso/codeLogin", "/codeLoginYiti"})
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult ssoCodeLogin(String code) {
+        if (StringUtils.isEmpty(code)) {
+            return AjaxResult.error("授权码不能为空");
+        }
+
+        String codeKey = "sso_code:" + code;
+        Map<String, Object> codeData = redisCache.getCacheObject(codeKey);
+        if (codeData == null) {
+            return AjaxResult.error("授权码无效或已过期，请重新发起跳转");
+        }
+        // 立即删除，防止重放攻击
+        redisCache.deleteObject(codeKey);
+
+        String username = Convert.toStr(codeData.get("username"));
+        String nickName = Convert.toStr(codeData.get("nickName"));
+        String phonenumber = Convert.toStr(codeData.get("phonenumber"));
+        String email = Convert.toStr(codeData.get("email"));
+        String sex = Convert.toStr(codeData.get("sex"));
+        String sourceUserId = Convert.toStr(codeData.get("sourceUserId"));
+
+        if (StringUtils.isEmpty(username)) {
+            return AjaxResult.error("授权码中未包含有效用户信息");
+        }
+
+        // 1. 查找用户（按优先级：映射表 -> 用户名 -> 手机号）
+        SysUser user = findUserBySsoStrategy(sourceUserId, username, phonenumber);
+
+        // 2. 如果不存在，自动即时建号（JIT 开户）
+        if (user == null) {
+            user = new SysUser();
+            user.setUserName(username);
+            user.setNickName(StringUtils.isNotEmpty(nickName) ? nickName : username);
+            user.setPhonenumber(phonenumber);
+            user.setEmail(email);
+            user.setSex(StringUtils.isNotEmpty(sex) ? sex : "2");
+            // 生成强随机密码（SSO 用户走免密登录，防空密码漏洞）
+            user.setPassword(SecurityUtils.encryptPassword(IdUtils.fastUUID()));
+            user.setStatus("0");
+            user.setDelFlag("0");
+
+            // 分配默认角色：role_id=7 (体验用户)
+            user.setRoleIds(new Long[]{ 7L });
+
+            // 插入用户及角色关联
+            userService.insertUser(user);
+            log.info("SSO 自动开通 qData 账号成功: userId={}, userName={}", user.getUserId(), username);
+        }
+
+        // 3. 检查并建立/补齐映射关系
+        bindAuthMapping(user.getUserId(), sourceUserId);
+
+        // 4. 账号状态校验
+        if ("2".equals(user.getDelFlag())) {
+            return AjaxResult.error("该账号已被删除，无法登录");
+        }
+        if ("1".equals(user.getStatus())) {
+            return AjaxResult.error("该账号已被停用，请联系管理员");
+        }
+
+        // 5. 生成 qData 本地 JWT Token
+        LoginUser loginUser = createLoginUser(user);
+        String token = tokenService.createToken(loginUser);
+
+        log.info("用户 [{}] 通过一体两翼 SSO 登录成功", user.getUserName());
+        return AjaxResult.success("登录成功", token);
+    }
+
+    /**
+     * 用户查找优先级策略
+     */
+    private SysUser findUserBySsoStrategy(String sourceUserId, String username, String phone) {
+        // 1. 优先查已有映射关系
+        if (StringUtils.isNotEmpty(sourceUserId)) {
+            LambdaQueryWrapper<RelUserAuthProductDO> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(RelUserAuthProductDO::getAuthId, sourceUserId)
+                    .eq(RelUserAuthProductDO::getAuthProductType, AuthProductEnums.YITILIANGYI.code);
+            RelUserAuthProductDO authInfo = relUserAuthProductMapper.selectOne(wrapper);
+            if (authInfo != null && authInfo.getUserId() != null) {
+                SysUser mappedUser = userService.selectUserById(authInfo.getUserId());
+                if (mappedUser != null) {
+                    return mappedUser;
+                }
+            }
+        }
+
+        // 2. 尝试按用户名匹配
+        if (StringUtils.isNotEmpty(username)) {
+            SysUser byName = userService.selectUserByUserName(username);
+            if (byName != null) {
+                return byName;
+            }
+        }
+
+        // 3. 若有手机号，尝试按手机号匹配（解决两边用户名不一致但手机号相同的情况）
+        if (StringUtils.isNotEmpty(phone)) {
+            SysUser byPhone = userService.findUserByNameOrPhone(phone);
+            if (byPhone != null) {
+                return byPhone;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 关联或更新映射表记录
+     */
+    private void bindAuthMapping(Long qDataUserId, String sourceUserId) {
+        if (StringUtils.isEmpty(sourceUserId) || qDataUserId == null) {
+            return;
+        }
+        LambdaQueryWrapper<RelUserAuthProductDO> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(RelUserAuthProductDO::getAuthId, sourceUserId)
+                .eq(RelUserAuthProductDO::getAuthProductType, AuthProductEnums.YITILIANGYI.code);
+        Long count = relUserAuthProductMapper.selectCount(wrapper);
+        if (count == null || count == 0) {
+            RelUserAuthProductDO record = RelUserAuthProductDO.builder()
+                    .userId(qDataUserId)
+                    .authId(sourceUserId)
+                    .authProductType(AuthProductEnums.YITILIANGYI.code)
+                    .build();
+            relUserAuthProductMapper.insert(record);
+        }
     }
 }

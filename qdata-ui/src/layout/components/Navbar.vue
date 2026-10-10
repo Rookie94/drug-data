@@ -132,9 +132,6 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <div class="right-menu-item hover-effect" @click="openDocumentation">
-          <svg-icon iconClass="bzzx" style="font-size: 18px" />
-        </div>
         <!-- ------------------------------- Reporting for work ---------------------------------- -->
         <el-popover
           trigger="hover"
@@ -880,7 +877,6 @@ function openUpdateLog() {
   }).catch((error) => {
     console.error("Add version track failed:", error);
   });
-  window.open("https://gitee.com/qiantongtech/qData/releases", "_blank");
 }
 
 function handleCommand(command) {

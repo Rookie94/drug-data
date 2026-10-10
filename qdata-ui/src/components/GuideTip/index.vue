@@ -89,6 +89,7 @@ const tipIdToI18nKey = {
 const config = computed(() => {
   const original = guideTipConfig[props.tipId] || {};
   const i18nKey = tipIdToI18nKey[props.tipId];
+  let res = { ...original };
   if (i18nKey) {
     const titleKey = `guide.${i18nKey}.title`;
     const contentKey = `guide.${i18nKey}.content`;
@@ -98,7 +99,7 @@ const config = computed(() => {
     const content = t(contentKey);
     const extensionLabel = te(extensionLabelKey) ? t(extensionLabelKey) : original.extensionLabel;
     const extensionContent = te(extensionContentKey) ? t(extensionContentKey) : original.extensionContent;
-    return {
+    res = {
       title: title !== titleKey ? title : original.title,
       content: content !== contentKey ? content : original.content,
       extensionLabel,
@@ -107,7 +108,11 @@ const config = computed(() => {
       version: original.version
     };
   }
-  return original;
+  if (res.content) {
+    // Strip external documentation and community links
+    res.content = res.content.replace(/<a\b[^>]*>.*?<\/a>/gi, '').trim();
+  }
+  return res;
 })
 const extensionPlainText = computed(() => (config.value.extensionContent || '').replace(/<[^>]*>/g, ''))
 

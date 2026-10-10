@@ -1,1245 +1,706 @@
-<!--
-  Copyright © 2025-present Jiangsu Qiantong Technology Co., Ltd.
-
-  This file is part of qData Data Middle Platform (Open Source Edition).
-
-  qData is licensed under Apache License 2.0 with additional qData terms.
-  You may use qData for commercial purposes, but you may not remove, hide,
-  modify, or replace the qData logo, copyright notices, license notices,
-  or attribution information without a separate commercial license.
-
-  White-label use, OEM distribution, rebranding, or presenting qData as
-  another product requires separate commercial authorization from
-  Jiangsu Qiantong Technology Co., Ltd.
-
-  Business License: https://community.qdata.tech/business/policy.html
-  See the LICENSE file in the project root for full license information.
--->
-
 <template>
-    <!-- Last logged in user login page login page style 2 -->
-    <div class="app-container login-two sysInfo sysInfo-wrap" ref="app-container">
-        <div class="left-content">
-            <div class="swiper leftSwiper">
-                <div class="swiper-wrapper">
-                    <!--          <el-carousel  style="width:100%;heght:100%;" arrow="never" autoplay>-->
-                    <!--            <el-carousel-item v-for="(item,index) in loginimglist" :key="index">-->
-                    <!--              <div :class="'swiper-slide swiper-slide-'+item.id"></div>-->
-                    <!--            </el-carousel-item>-->
-                    <!--          </el-carousel>-->
-                  <el-carousel class="login-carousel" arrow="never" autoplay indicator-position="none">
-                    <el-carousel-item v-for="(item, index) in loginimglist" :key="index">
-                      <div v-if="item.animated" class="swiper-slide qdata-scene">
-                        <svg
-                            class="qdata-scene__canvas"
-                            viewBox="0 0 1305 1206"
-                            preserveAspectRatio="xMidYMid slice"
-                            aria-hidden="true"
-                        >
-                          <defs>
-                            <clipPath id="left-node-only" clipPathUnits="userSpaceOnUse">
-                              <rect x="135" y="620" width="56" height="72"/>
-                            </clipPath>
-                            <radialGradient id="cloud-route-orb" cx="50%" cy="50%" r="50%">
-                              <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-                              <stop offset="35%" stop-color="#bff4ff" stop-opacity="0.95"/>
-                              <stop offset="100%" stop-color="#25b9ff" stop-opacity="0"/>
-                            </radialGradient>
-                            <path
-                                id="cloud-route-path"
-                                d="M 1060 545 L 1108 573 Q 1120 580 1108 588 L 879 750 Q 865 760 852 751 L 750 682"
-                            />
-                            <path
-                                id="left-route-upper-path"
-                                d="M 212 650 L 350 568"
-                            />
-                            <path
-                                id="left-route-lower-path"
-                                d="M 232 670 L 329 737 Q 340 745 351 738 L 365 730 L 400 708"
-                            />
-                            <path
-                                id="left-route-orb-path"
-                                d="M 400 708 L 365 730 L 351 738 Q 340 745 329 737 L 232 670 L 212 650 L 350 568"
-                            />
-                            <path
-                                id="bottom-chip-route-path"
-                                d="M 440 724 L 397 749 Q 385 755 398 762 L 605 885"
-                            />
-                            <path
-                                id="bottom-chip-orb-path"
-                                d="M 625 885 L 398 762 Q 385 755 397 749 L 445 724"
-                            />
-                          </defs>
-                          <image :href="item.image" x="0" y="0" width="1305" height="1206" decoding="async" fetchpriority="high" />
+  <div class="login-wrapper" ref="app-container">
+    <!-- Left Hero & Branding Section -->
+    <div class="login-left">
+      <!-- Ambient light effect -->
+      <div class="ambient-glow glow-top"></div>
+      <div class="ambient-glow glow-bottom"></div>
+      <div class="tech-grid-overlay"></div>
 
-                          <g class="qdata-scene__left-routes">
-                            <use href="#left-route-upper-path"/>
-                            <use href="#left-route-lower-path"/>
-                            <use href="#bottom-chip-route-path"/>
-                          </g>
-
-                          <use
-                              class="qdata-scene__cloud-route"
-                              href="#cloud-route-path"
-                          />
-
-                          <g class="qdata-scene__route-orb">
-                            <circle class="qdata-scene__route-orb-halo" r="9"/>
-                            <circle class="qdata-scene__route-orb-core" r="3"/>
-                            <animateMotion
-                                dur="4.8s"
-                                repeatCount="indefinite"
-                            >
-                              <mpath href="#cloud-route-path"/>
-                            </animateMotion>
-                            <animate
-                                attributeName="opacity"
-                                values="0;1;1;0"
-                                keyTimes="0;0.08;0.9;1"
-                                dur="4.8s"
-                                repeatCount="indefinite"
-                            />
-                          </g>
-
-                          <g class="qdata-scene__route-orb qdata-scene__left-route-orb">
-                            <circle class="qdata-scene__route-orb-halo" r="9"/>
-                            <circle class="qdata-scene__route-orb-core" r="3"/>
-                            <animateMotion dur="5.2s" repeatCount="indefinite">
-                              <mpath href="#left-route-orb-path"/>
-                            </animateMotion>
-                            <animate
-                                attributeName="opacity"
-                                values="0;1;1;0"
-                                keyTimes="0;0.08;0.9;1"
-                                dur="5.2s"
-                                repeatCount="indefinite"
-                            />
-                          </g>
-
-                          <g class="qdata-scene__route-orb qdata-scene__bottom-route-orb">
-                            <circle class="qdata-scene__route-orb-halo" r="9"/>
-                            <circle class="qdata-scene__route-orb-core" r="3"/>
-                            <animateMotion dur="4s" repeatCount="indefinite">
-                              <mpath href="#bottom-chip-orb-path"/>
-                            </animateMotion>
-                            <animate
-                                attributeName="opacity"
-                                values="0;1;1;0"
-                                keyTimes="0;0.08;0.9;1"
-                                dur="4.6s"
-                                repeatCount="indefinite"
-                            />
-                          </g>
-
-                          <image
-                              v-for="sceneItem in sceneItems"
-                              :key="sceneItem.name"
-                              :href="sceneItem.src"
-                              :x="sceneItem.x"
-                              :y="sceneItem.y"
-                              :width="sceneItem.width"
-                              :height="sceneItem.height"
-                              :clip-path="sceneItem.clipPath"
-                              :class="['qdata-scene__item', `qdata-scene__item--${sceneItem.motion}`]"
-                              decoding="async"
-                              :style="{
-                                            '--float-duration': sceneItem.duration,
-                                            '--float-delay': sceneItem.delay
-                                        }"
-                          />
-                        </svg>
-                      </div>
-                      <div v-else class="swiper-slide" :style="getBackgroundStyle(item)"></div>
-                        </el-carousel-item>
-                    </el-carousel>
-                </div>
-                <div class="swiper-pagination"></div>
-            </div>
+      <div class="left-hero-content">
+        <div class="platform-badge">
+          <span class="badge-dot"></span>
+          <span>ENTERPRISE DATA PLATFORM</span>
         </div>
-        <div class="right-content">
-            <div class="logo">
-              <img :src="logo" decoding="async" fetchpriority="high" />
-              <div ref="target" :class="['language', langOpen ? 'language-open' : 'language-close']"
-                   @click="langOpen = !langOpen"
-              >
-                <img class="language-icon" src="@/assets/images/system/login/icon-language.svg" alt="" />
-                <div class="language-name">{{ currentLocaleName }}</div>
-                <el-icon class="language-switch">
-                  <ArrowRight />
-                </el-icon>
 
-                <div class="language-list">
-                  <div
-                    v-for="item in localeMap"
-                    :key="item.lang"
-                    class="lang-item"
-                    @click.stop="handleLangClick(item.lang)"
-                  >{{ item.name }}</div>
-                </div>
-              </div>
+        <h1 class="hero-title">企业级数据中台</h1>
+        <p class="hero-subtitle">全域数据资产纳管 · 敏捷数据研发 · 统一数据服务治理</p>
+
+        <div class="features-list">
+          <div class="feature-item">
+            <div class="feature-icon icon-asset">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z" />
+                <path d="M9 8h6M9 12h6M9 16h4" />
+              </svg>
             </div>
-          <div>
-                <div class="greeting">
-                    <div class="entry_period">{{ td('login.greeting.greetingHello') }}，{{ greeting }}！</div>
-                    <div class="entry_greeting">{{ td('login.greeting.greetingMessage') }}</div>
-                </div>
-                <div class="login-panel">
-                    <el-form ref="loginRef" :model="loginForm" :rules="loginRules">
-                        <p class="titles">{{ td('login.title') }}</p>
-                        <div class="titles-bar"></div>
-                        <el-form-item prop="username">
-                            <el-input v-model="loginForm.username" type="text" auto-complete="off" :placeholder="td('login.username')">
-                                <template #prefix>
-                                    <i class="iconfont">&#xebc0;</i>
-                                </template>
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item prop="password">
-                            <el-input v-model="loginForm.password" type="password" auto-complete="off" :placeholder="td('login.password')"
-                                @keyup.enter="handleLogin">
-                                <template #prefix>
-                                    <i class="iconfont">&#xeb8d;</i>
-                                </template>
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item prop="code" v-if="captchaEnabled">
-                            <el-input v-model="loginForm.code" auto-complete="off" :placeholder="td('login.code')" class="code-class"
-                                @keyup.enter.native="handleLogin">
-                                <template #prefix>
-                                    <i class="iconfont">&#xeb9e;</i>
-                                </template>
-                            </el-input>
-                            <div class="login-code">
-                                <img :src="codeUrl" @click="getCode" class="login-code-img" />
-                            </div>
-                        </el-form-item>
-
-                        <el-form-item style="width: 100%">
-                            <el-button :loading="loading" type="primary" style="width: 100%"
-                                @click.native.prevent="handleLogin">
-                                <span v-if="!loading">{{ td('login.loginBtn') }}</span>
-                                <span v-else>{{ td('login.logining') }}</span>
-                            </el-button>
-                        </el-form-item>
-
-                        <div class="form-actions">
-                            <el-checkbox v-model="loginForm.rememberMe">{{ td('login.remember') }}</el-checkbox>
-                            <el-text type="primary" @click="dialogVisible = true">{{ td('login.forgetPassword') }}</el-text>
-                        </div>
-                    </el-form>
-                </div>
+            <div class="feature-text">
+              <div class="feature-heading">全域资产地图</div>
+              <div class="feature-sub">多源异构元数据自动采集与全景数据目录</div>
             </div>
-            <div>
-                <div class="description">
-                    <div class="contact" style="float: left">
-                        <img src="@/assets/images/system/login/form-phone.png" />
-                        <div>
-                            <p>{{ td('login.info.phoneContact') }}</p>
-                            <p>
-                                {{
-                                    contentDetail && contentDetail.contactNumber
-                                        ? contentDetail.contactNumber
-                                        : '400-660-8208'
-                                }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="contact" style="margin-left: 24px">
-                        <img src="@/assets/images/system/login/form-email.png" />
-                        <div>
-                            <p>{{ td('login.info.emailContact') }}</p>
-                            <p>
-                                {{
-                                    contentDetail && contentDetail.email
-                                        ? contentDetail.email
-                                        : 'sales@qiantong.tech'
-                                }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chrome-wrap">
-                    <img src="@/assets/images/system/login/img-goge-icon.png" style="height: 20px" />
-                    <span style="color: #888; font-size: 12px; line-height: 0; margin-left: 10px">{{ td('login.info.chromeHint') }}</span>
-                    <span style="color: #ee2223; font-size: 12px; line-height: 0">Chrome</span>
-                    <span style="color: #888; font-size: 12px; line-height: 0">{{ td('login.info.chromeHint2') }}</span>
-                    <a href="https://www.google.cn/chrome/" target="_blank">
-                        <div style="
-                                margin-left: 15px;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                            ">
-                            <img id="window_img" src="@/assets/images/system/login/icon-window.svg"
-                                style="height: 25px" />
-                            <span style="
-                                    color: #888;
-                                    font-size: 12px;
-                                    line-height: 0;
-                                    margin-top: 7px;
-                                ">Window</span>
-                        </div>
-                    </a>
-                    <a href="https://www.google.cn/chrome/" target="_blank">
-                        <div style="
-                                margin-left: 15px;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: center;
-                            ">
-                            <img id="mac_img" src="@/assets/images/system/login/icon-mac.svg" style="height: 25px" />
-                            <span style="
-                                    color: #888;
-                                    font-size: 12px;
-                                    line-height: 0;
-                                    margin-top: 7px;
-                                ">Mac</span>
-                        </div>
-                    </a>
-                </div>
-                <div class="bottom-info">
-                    <div class="copy-right" style="cursor: pointer;">
-                        <a href="https://qiantong.tech/" target="_blank">
-                            Copyright© {{ new Date().getFullYear() }}
-                            <span style="color: #2666fb">{{ td('login.info.companyName') }}</span>
-                            {{ td('login.info.copyrightOwner') }}
-                        </a>
-                    </div>
+          </div>
 
-                    <div class="record" @click="goKtPage()">
-                        <img src="https://www.asktempo.com/statics/images/an.png" alt="" />
-                        <!--            Su ICP No. 2022008519-1-->
-                        &nbsp;&nbsp;
-                        {{
-                            contentDetail && contentDetail.recordNumber
-                                ? contentDetail.recordNumber
-                                : '苏ICP备2022008519号-3'
-                        }}
-                    </div>
-                </div>
+          <div class="feature-item">
+            <div class="feature-icon icon-dev">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6" />
+                <polyline points="8 6 2 12 8 18" />
+              </svg>
             </div>
+            <div class="feature-text">
+              <div class="feature-heading">敏捷数据研发</div>
+              <div class="feature-sub">低代码可视化 ETL 与高效数据流转集成</div>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon icon-security">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <div class="feature-heading">数据安全合规</div>
+              <div class="feature-sub">敏感级别自动标注与动态脱敏全链路管控</div>
+            </div>
+          </div>
+
+          <div class="feature-item">
+            <div class="feature-icon icon-service">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+              </svg>
+            </div>
+            <div class="feature-text">
+              <div class="feature-heading">统一数据服务</div>
+              <div class="feature-sub">API 一键发布与微服务全周期调用监控</div>
+            </div>
+          </div>
         </div>
+
+        <div class="system-status-pill">
+          <span class="status-dot"></span>
+          <span>系统状态：服务正常运行</span>
+        </div>
+      </div>
     </div>
 
-    <el-dialog v-model="dialogVisible" :title="td('login.forgetPassword')" class="fp-form-dialog" width="650px"
-        :append-to="$refs['app-container']" draggable destroy-on-close>
-        <el-form :model="fpForm" label-width="auto" style="padding: 10px 60px 0" :label-position="labelPosition">
-            <el-row :gutter="20">
-                <el-col :span="24">
-                    <el-form-item :label="td('login.username')" :label-position="labelPosition">
-                        <el-input v-model="fpForm.name" :placeholder="td('login.usernameInputPlaceholder')" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item :label="td('login.code')" :label-position="labelPosition">
-                        <div class="wrapper">
-                            <el-input v-model="fpForm.code" :placeholder="td('login.codePlaceholder')" />
-                            <el-button type="primary" :disabled="codeFlag" style="margin-left: 10px"
-                                @click="handleFPCodeClick">{{ codeFlag ? `${codeTime}s` : td('login.getCode') }}</el-button>
-                        </div>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item :label="td('login.newPassword')" :label-position="labelPosition">
-                        <el-input v-model="fpForm.password" :placeholder="td('login.newPasswordPlaceholder')" />
-                    </el-form-item>
-                </el-col>
-                <el-col :span="24">
-                    <el-form-item :label="td('login.confirmPassword')" :label-position="labelPosition">
-                        <el-input v-model="fpForm.password2" :placeholder="td('login.confirmPasswordPlaceholder')" />
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-        <template #footer>
-            <div class="dialog-footer">
-                <el-button type="primary" @click="dialogVisible = false"> {{ td('login.resetPassword') }} </el-button>
+    <!-- Right Login Form Section -->
+    <div class="login-right">
+      <div class="login-card-container">
+        <div class="login-card">
+          <div class="card-header">
+            <h2 class="welcome-heading">{{ td('login.greeting.greetingHello') }}，{{ greeting }}！</h2>
+            <p class="welcome-caption">{{ td('login.greeting.greetingMessage') }}</p>
+          </div>
+
+          <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="auth-form">
+            <el-form-item prop="username">
+              <el-input
+                v-model="loginForm.username"
+                type="text"
+                size="large"
+                auto-complete="off"
+                :placeholder="td('login.username')"
+              >
+                <template #prefix>
+                  <i class="iconfont">&#xebc0;</i>
+                </template>
+              </el-input>
+            </el-form-item>
+
+            <el-form-item prop="password">
+              <el-input
+                v-model="loginForm.password"
+                type="password"
+                size="large"
+                auto-complete="off"
+                show-password
+                :placeholder="td('login.password')"
+                @keyup.enter="handleLogin"
+              >
+                <template #prefix>
+                  <i class="iconfont">&#xeb8d;</i>
+                </template>
+              </el-input>
+            </el-form-item>
+
+            <el-form-item prop="code" v-if="captchaEnabled">
+              <div class="captcha-row">
+                <el-input
+                  v-model="loginForm.code"
+                  size="large"
+                  auto-complete="off"
+                  :placeholder="td('login.code')"
+                  @keyup.enter="handleLogin"
+                >
+                  <template #prefix>
+                    <i class="iconfont">&#xeb9e;</i>
+                  </template>
+                </el-input>
+                <div class="captcha-img-wrapper" @click="getCode" title="点击刷新验证码">
+                  <img :src="codeUrl" alt="验证码" class="captcha-image" />
+                </div>
+              </div>
+            </el-form-item>
+
+            <div class="form-extra-row">
+              <el-checkbox v-model="loginForm.rememberMe">{{ td('login.remember') }}</el-checkbox>
+              <el-button link type="primary" class="forget-link" @click="dialogVisible = true">
+                {{ td('login.forgetPassword') }}
+              </el-button>
             </div>
-        </template>
+
+            <el-form-item class="submit-form-item">
+              <el-button
+                :loading="loading"
+                type="primary"
+                size="large"
+                class="login-button"
+                @click="handleLogin"
+              >
+                <span v-if="!loading">{{ td('login.loginBtn') }}</span>
+                <span v-else>{{ td('login.logining') }}</span>
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Forget Password Modal -->
+    <el-dialog
+      v-model="dialogVisible"
+      :title="td('login.forgetPassword')"
+      class="fp-form-dialog"
+      width="540px"
+      :append-to="$refs['app-container']"
+      draggable
+      destroy-on-close
+    >
+      <el-form :model="fpForm" label-width="80px" style="padding: 10px 20px 0">
+        <el-form-item :label="td('login.username')">
+          <el-input v-model="fpForm.username" :placeholder="td('login.usernameInputPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="td('login.code')">
+          <div class="fp-code-row">
+            <el-input v-model="fpForm.code" :placeholder="td('login.codePlaceholder')" />
+            <el-button type="primary" :disabled="codeFlag" @click="handleFPCodeClick">
+              {{ codeFlag ? `${codeTime}s` : td('login.getCode') }}
+            </el-button>
+          </div>
+        </el-form-item>
+        <el-form-item :label="td('login.newPassword')">
+          <el-input v-model="fpForm.password" show-password :placeholder="td('login.newPasswordPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="td('login.confirmPassword')">
+          <el-input v-model="fpForm.password2" show-password :placeholder="td('login.confirmPasswordPlaceholder')" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">{{ td('common.button.cancel') || '取消' }}</el-button>
+          <el-button type="primary" @click="dialogVisible = false">{{ td('login.resetPassword') }}</el-button>
+        </div>
+      </template>
     </el-dialog>
-    <!-- </div> -->
+  </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import useDefaultLang from "@/composables/useDefaultLang";
+import { ref, computed, onMounted, getCurrentInstance } from 'vue';
+import useDefaultLang from '@/composables/useDefaultLang';
 import { getCodeImg } from '@/api/system/login';
 import Cookies from 'js-cookie';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
 import useUserStore from '@/store/system/user.js';
-import useLocaleStore from '@/store/system/locale.js';
-import { useLocale } from '@/composables/useLocale';
-import { useLocaleImage } from '@/composables/useLocaleImage';
 import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/images/system/login/logo-qdata.png';
-import analyticsCard from '@/assets/images/system/login/qdata-scene/analytics-card.png';
-import skylineCard from '@/assets/images/system/login/qdata-scene/data-skyline-card.png';
-import codeCard from '@/assets/images/system/login/qdata-scene/code-card.png';
-import cloudCard from '@/assets/images/system/login/qdata-scene/cloud-card.png';
-import largeCloud from '@/assets/images/system/login/qdata-scene/large-cloud.png';
-import topChip from '@/assets/images/system/login/qdata-scene/chip-bottom.png';
-import bottomChip from '@/assets/images/system/login/qdata-scene/chip-bottom.png';
-import leftNode from '@/assets/images/system/login/qdata-scene/network-node-left.png';
-import lowerLeftNode from '@/assets/images/system/login/qdata-scene/network-node-lower-left.png';
-import rightNode from '@/assets/images/system/login/qdata-scene/network-node-right.png';
-import opennessIcon from '@/assets/images/system/login/qdata-scene/openness-shield-no-border.png';
-import governanceIcon from '@/assets/images/system/login/qdata-scene/governance-network-no-border.png';
-import valueIcon from '@/assets/images/system/login/qdata-scene/value-bars-no-border.png';
 
 const { td } = useDefaultLang();
-const { changeLocale } = useLocale();
-const { getImage } = useLocaleImage();
 const { greeting } = useTimeGreeting();
 const userStore = useUserStore();
-const localeStore = useLocaleStore();
-const dialogVisible = ref(false);
 const { proxy } = getCurrentInstance();
+
+const dialogVisible = ref(false);
 const loading = ref(false);
 const codeUrl = ref('');
-
-const langOpen = ref(false);
-const localeMap = computed(() => localeStore.getLocaleMap);
-const currentLocaleName = computed(() => {
-  const lang = localeStore.getCurrentLocale.lang;
-  return localeMap.value.find((v) => v.lang === lang)?.name || lang;
-});
-
 const captchaEnabled = ref(true);
 const codeFlag = ref(false);
+
 const loginForm = ref({
-    username: 'qData',
-    password: 'qData123',
-    rememberMe: false,
-    code: '',
-    uuid: ''
+  username: 'qData',
+  password: 'qData123',
+  rememberMe: false,
+  code: '',
+  uuid: ''
 });
+
 const fpForm = ref({
-    username: '',
-    password: '',
-    password2: '',
-    code: ''
+  username: '',
+  password: '',
+  password2: '',
+  code: ''
 });
-const sceneItems = [
-    { name: 'analytics', src: analyticsCard, x: 240, y: 462, width: 132, height: 177, motion: 'a', duration: '7.9s', delay: '-2.4s' },
-    { name: 'skyline', src: skylineCard, x: 355, y: 345, width: 93, height: 216, motion: 'b', duration: '9.7s', delay: '-5.1s' },
-    { name: 'top-chip', src: topChip, x: 760, y: 345, width: 179, height: 135, motion: 'f', duration: '8.9s', delay: '-4.6s' },
-    { name: 'code', src: codeCard, x: 701, y: 385, width: 102, height: 145, motion: 'c', duration: '8.6s', delay: '-1.3s' },
-    { name: 'cloud-card', src: cloudCard, x: 805, y: 455, width: 117, height: 162, motion: 'd', duration: '10.8s', delay: '-6.7s' },
-    { name: 'large-cloud', src: largeCloud, x: 909, y: 365, width: 226, height: 243, motion: 'e', duration: '11.9s', delay: '-3.8s' },
-    { name: 'bottom-chip', src: bottomChip, x: 454, y: 775, width: 215, height: 181, motion: 'c', duration: '12.7s', delay: '-8.2s' },
-    { name: 'left-node', src: leftNode, x: 180, y: 600, width: 94, height: 113, motion: 'static', duration: '0s', delay: '0s' },
-    { name: 'lower-left-node', src: lowerLeftNode, x: 285, y: 620, width: 91, height: 131, motion: 'static', duration: '0s', delay: '0s' },
-    { name: 'right-node', src: rightNode, x: 800, y: 684, width: 131, height: 148, motion: 'static', duration: '0s', delay: '0s' },
-    { name: 'openness', src: opennessIcon, x: 138, y: 992, width: 90, height: 93, motion: 'vertical-a', duration: '9.8s', delay: '-3.3s' },
-    { name: 'governance', src: governanceIcon, x: 505, y: 989, width: 90, height: 100, motion: 'vertical-b', duration: '11.4s', delay: '-6.1s' },
-    { name: 'value', src: valueIcon, x: 852, y: 984, width: 120, height: 100, motion: 'vertical-c', duration: '6.3s', delay: '-10.2s' }
-];
-
-const defaltImglist = ref([
-    { id: 1, image: getImage('login/banner-zt.png'), animated: true },
-]);
-// Render the bundled scene immediately. Remote carousel configuration is loaded in the background.
-const loginimglist = ref(defaltImglist.value);
-
-const getBackgroundStyle = (item) => {
-    return {
-        background: `url(${item.image}) center center / cover no-repeat`,
-    };
-};
 
 const loginRules = computed(() => ({
-    username: [{ required: true, trigger: 'blur', message: td('login.usernameRequired') }],
-    password: [{ required: true, trigger: 'blur', message: td('login.passwordRequired') }],
-    code: [{ required: true, trigger: 'change', message: td('login.codeRequired') }]
+  username: [{ required: true, trigger: 'blur', message: td('login.usernameRequired') }],
+  password: [{ required: true, trigger: 'blur', message: td('login.passwordRequired') }],
+  code: [{ required: true, trigger: 'change', message: td('login.codeRequired') }]
 }));
 
 const logo = ref(defaultLogo);
 const contentDetail = ref(null);
 
-const preloadImage = (src) => new Promise((resolve, reject) => {
+const preloadImage = (src) =>
+  new Promise((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(src);
     image.onerror = reject;
     image.src = src;
-});
+  });
 
 onMounted(() => {
-    fetchContent();
+  fetchContent();
 });
+
 const fetchContent = async () => {
-    try {
-        const res = await getContent(1);
-        if (res.code == 200) {
-            const data = res.data;
-            contentDetail.value = data;
-            const sysLogo = data.loginLogo;
-            if (sysLogo) {
-                preloadImage(sysLogo)
-                    .then(() => {
-                        logo.value = sysLogo;
-                    })
-                    .catch(() => {});
-            }
-            const carouselImageList = data.carouselImage ? data.carouselImage.split(',') : [];
-            const carouselImgList = carouselImageList
-                .filter(Boolean)
-                .map((image, index) => ({ id: index + 1, image }));
-            if (carouselImgList.length > 0) {
-                // Keep the default scene visible until every remote slide can be painted.
-                await Promise.all(carouselImgList.map((item) => preloadImage(item.image)));
-                loginimglist.value = carouselImgList;
-            }
-        }
-    } catch {
-        // The bundled logo and scene are already visible, so failed configuration is non-blocking.
+  try {
+    const res = await getContent(1);
+    if (res.code == 200) {
+      const data = res.data;
+      contentDetail.value = data;
+      const sysLogo = data.loginLogo;
+      if (sysLogo) {
+        preloadImage(sysLogo)
+          .then(() => {
+            logo.value = sysLogo;
+          })
+          .catch(() => {});
+      }
     }
+  } catch {
+    // Non-blocking fallback
+  }
 };
 
-// Switch language: update store + load language pack + refresh page
-async function handleLangClick(lang) {
-  langOpen.value = false;
-  if (lang === localeStore.getCurrentLocale.lang) return;
-  localeStore.setCurrentLocale({ lang });
-  await changeLocale(lang);
-  window.location.reload();
-}
-
 function getCookie() {
-    const username = Cookies.get('username');
-    const password = Cookies.get('password');
-    const rememberMe = Cookies.get('rememberMe');
-    loginForm.value = {
-        username: username === undefined ? loginForm.value.username : username,
-        password: password === undefined ? loginForm.value.password : decrypt(password),
-        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
-    };
+  const username = Cookies.get('username');
+  const password = Cookies.get('password');
+  const rememberMe = Cookies.get('rememberMe');
+  loginForm.value = {
+    username: username === undefined ? loginForm.value.username : username,
+    password: password === undefined ? loginForm.value.password : decrypt(password),
+    rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+  };
 }
 getCookie();
 
 function getCode() {
-    getCodeImg().then((res) => {
-        captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
-        if (captchaEnabled.value) {
-            codeUrl.value = 'data:image/gif;base64,' + res.img;
-            loginForm.value.uuid = res.uuid;
-        }
-    });
+  getCodeImg().then((res) => {
+    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+    if (captchaEnabled.value) {
+      codeUrl.value = 'data:image/gif;base64,' + res.img;
+      loginForm.value.uuid = res.uuid;
+    }
+  });
 }
 getCode();
 
 function handleLogin() {
-    localStorage.setItem('username', loginForm.value.username);
-    proxy.$refs.loginRef.validate((valid) => {
-        if (valid) {
-            loading.value = true;
-            // Check the Require to remember password setting and set it in cookies to remember username and password.
-            if (loginForm.value.rememberMe) {
-                Cookies.set('username', loginForm.value.username, { expires: 30 });
-                Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
-                Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
-            } else {
-                // Otherwise remove
-                Cookies.remove('username');
-                Cookies.remove('password');
-                Cookies.remove('rememberMe');
-            }
-            // Call the login method of action
-            userStore
-                .login(loginForm.value)
-                .then(() => {
-                    window.location.href = '/index';
-                })
-                .catch(() => {
-                    loading.value = false;
-                    // Get verification code again
-                    if (captchaEnabled.value) {
-                        getCode();
-                    }
-                });
-        }
-    });
+  localStorage.setItem('username', loginForm.value.username);
+  proxy.$refs.loginRef.validate((valid) => {
+    if (valid) {
+      loading.value = true;
+      if (loginForm.value.rememberMe) {
+        Cookies.set('username', loginForm.value.username, { expires: 30 });
+        Cookies.set('password', encrypt(loginForm.value.password), { expires: 30 });
+        Cookies.set('rememberMe', loginForm.value.rememberMe, { expires: 30 });
+      } else {
+        Cookies.remove('username');
+        Cookies.remove('password');
+        Cookies.remove('rememberMe');
+      }
+
+      userStore
+        .login(loginForm.value)
+        .then(() => {
+          window.location.href = '/index';
+        })
+        .catch(() => {
+          loading.value = false;
+          if (captchaEnabled.value) {
+            getCode();
+          }
+        });
+    }
+  });
 }
-const timeValue = 3;
+
+const timeValue = 60;
 const codeTime = ref(timeValue);
 function handleFPCodeClick() {
-    if (codeFlag.value) return;
-    codeFlag.value = !codeFlag.value;
-    setInterval(() => {
-        if (codeTime.value > 1) {
-            codeTime.value--;
-        } else {
-            clearInterval();
-            codeTime.value = timeValue;
-            codeFlag.value = false;
-        }
-    }, 1000);
-}
-//Click on the registration number to adjust the Ministry of Industry and Information Technology
-function goKtPage() {
-    // Open link in new window
-    window.open('https://beian.miit.gov.cn/#/Integrated/index', '_blank'); // Open link in new window
+  if (codeFlag.value) return;
+  codeFlag.value = true;
+  const timer = setInterval(() => {
+    if (codeTime.value > 1) {
+      codeTime.value--;
+    } else {
+      clearInterval(timer);
+      codeTime.value = timeValue;
+      codeFlag.value = false;
+    }
+  }, 1000);
 }
 </script>
 
-<style lang="scss">
-.el-carousel__button {
-    background-color: #2666fb;
-}
-
-.fp-form-dialog {
-    .wrapper {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .el-button {
-            width: 102px;
-            min-width: 102px;
-        }
-    }
-
-    .el-dialog__body {
-        height: 316px !important;
-    }
-
-    .el-button {
-        background: #2666fb;
-        border-radius: 2px 2px 2px 2px;
-        border: 1px solid #2666fb;
-    }
-}
-</style>
-
 <style scoped lang="scss">
-.language {
+.login-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8fafc;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ================= Left Hero Section ================= */
+.login-left {
+  flex: 0 0 52%;
   position: relative;
+  background: linear-gradient(135deg, #070e1e 0%, #0c1a36 40%, #102652 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  color: #ffffff;
+  user-select: none;
+}
+
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.glow-top {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #2563eb 0%, transparent 70%);
+  top: -150px;
+  left: -100px;
+}
+
+.glow-bottom {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #0284c7 0%, transparent 70%);
+  bottom: -200px;
+  right: -150px;
+}
+
+.tech-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  pointer-events: none;
+}
+
+.left-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  width: 100%;
+}
+
+.platform-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(37, 99, 235, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 20px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #60a5fa;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  box-shadow: 0 0 8px #60a5fa;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  margin: 0 0 14px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #94a3b8;
+  margin: 0 0 42px 0;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.065);
+    border-color: rgba(96, 165, 250, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  font-family: PingFang SC;
-  color: #666666;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 600;
-  margin-left: auto;
-  margin-right: 4%;
+  justify-content: center;
 
-  .language-icon {
-    display: block;
-    width: 16px;
-    height: 16px;
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &.icon-asset {
+    background: rgba(37, 99, 235, 0.2);
+    color: #60a5fa;
+  }
+  &.icon-dev {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+  }
+  &.icon-security {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+  }
+  &.icon-service {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+  }
+}
+
+.feature-text {
+  flex: 1;
+}
+
+.feature-heading {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+}
+
+.feature-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.45;
+}
+
+.system-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 10px #34d399;
+}
+
+/* ================= Right Login Section ================= */
+.login-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 36px 60px;
+  background-color: #ffffff;
+  position: relative;
+}
+
+.login-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 20px 0;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 410px;
+}
+
+.card-header {
+  margin-bottom: 32px;
+}
+
+.welcome-heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.welcome-caption {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+.auth-form {
+  ::v-deep(.el-form-item) {
+    margin-bottom: 22px;
+  }
+
+  ::v-deep(.el-input__wrapper) {
+    padding: 2px 14px;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px #e2e8f0 inset;
+    transition: all 0.2s;
+
+    &:hover {
+      box-shadow: 0 0 0 1px #cbd5e1 inset;
+    }
+
+    &.is-focus {
+      box-shadow: 0 0 0 1px #2563eb inset, 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+    }
+  }
+
+  .iconfont {
+    font-size: 16px;
+    color: #94a3b8;
     margin-right: 6px;
   }
-
-  .language-name {
-    font-size: 15px;
-    margin-right: 8px;
-  }
-
-  ::v-deep(.language-switch) {
-    display: block;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .language-list {
-    display: none;
-    background: #ffffff;
-    box-shadow: 0px 5px 10px 0px rgba(51, 51, 51, 0.2);
-    border-radius: 8px;
-    padding: 8px 0 9px;
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    font-weight: 500;
-
-    .lang-item {
-      width: 100%;
-      height: 31px;
-      font-weight: 400;
-      font-size: 15px;
-      color: #333333;
-      line-height: 31px;
-      padding: 0 27px;
-      white-space: nowrap;
-
-      &:hover {
-        font-weight: 500;
-        color: var(--login-primary-color);
-        background-color: rgba($color: #eff6fe, $alpha: 0.5);
-      }
-    }
-  }
-
-  &.language-open {
-    ::v-deep(.language-switch) {
-      transform: rotate(90deg);
-    }
-
-    .language-list {
-      display: block;
-    }
-  }
 }
 
-.login-two {
-    height: 100%;
+.captcha-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.captcha-img-wrapper {
+  flex-shrink: 0;
+  width: 120px;
+  height: 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .captcha-image {
     width: 100%;
-    min-width: 1300px;
-    overflow: auto;
-    display: flex;
-
-    ::v-deep {
-        .el-carousel__container {
-            height: 100%;
-        }
-    }
-
-    /*  .swiper-slide-1{
-    background: url(@/assets/images/system/login/banner.png) center center / cover no-repeat;
+    height: 100%;
+    object-fit: cover;
   }
-  .swiper-slide-2{
-    background: url(@/assets/images/system/login/banner2.png) center center / cover no-repeat;
+}
+
+.form-extra-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  .forget-link {
+    font-size: 13px;
+    padding: 0;
+    color: #2563eb;
+
+    &:hover {
+      color: #1d4ed8;
+    }
   }
-  .swiper-slide-3{
-    background: url(@/assets/images/system/login/banner-gy.jpg) center center / cover no-repeat;
+}
+
+.submit-form-item {
+  margin-bottom: 0 !important;
+}
+
+.login-button {
+  width: 100%;
+  height: 44px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.38);
+    transform: translateY(-1px);
   }
-  .swiper-slide-4{
-    background: url(@/assets/images/system/login/banner-sl.png) center center / cover no-repeat;
-  }*/
 
-    .form-actions {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-    }
-
-    ::v-deep .el-form-item__content {
-        justify-content: space-between;
-    }
-
-    ::v-deep .el-input--medium .el-input__inner {
-        height: 40px;
-        line-height: 40px;
-        padding-left: 35px;
-        border-radius: 4px;
-        border: 1px solid #e6e6e6;
-    }
-
-    ::v-deep .el-input__icon.input-icon.svg-icon {
-        height: 45px;
-        width: 14px;
-        margin-left: 5px;
-    }
-
-    ::v-deep .el-form-item__error {
-        color: #ff4949;
-        font-size: 12px;
-        line-height: 1;
-        // padding-top: 9px;
-        position: absolute;
-        top: 100%;
-        left: 0;
-    }
-
-    ::v-deep .el-checkbox {
-        padding: 0 !important;
-    }
-
-    .login-code-img {
-        height: 100%;
-        width: 102px;
-    }
-
-    .login-code {
-        width: 104px;
-        height: 34px;
-        float: right;
-    }
-
-    ::v-deep .el-form-item {
-        margin-bottom: 24px;
-    }
-
-    ::v-deep .el-input__prefix {
-        top: 1px !important;
-        left: 15px !important;
-    }
-
-    .left-content {
-        width: 55%;
-        min-height: 750px;
-
-        .contents {
-            position: absolute;
-            margin: 6% 0px 0px 13%;
-            letter-spacing: 0em;
-            font-family: 'sharp';
-
-            .title {
-                font-size: 53px;
-                margin-bottom: -5px;
-                color: #000000;
-            }
-
-            .enTitle {
-                font-size: 19px;
-                margin-bottom: 70px;
-                color: #000000;
-            }
-
-            .digest {
-                font-size: 28px;
-                color: #000000;
-            }
-
-            .content {
-                width: 78%;
-                font-size: 18px;
-                line-height: 40px;
-                color: #000000;
-            }
-        }
-
-        .leftSwiper {
-            width: 100%;
-            height: 100%;
-
-            .swiper-wrapper,
-            .login-carousel,
-            .swiper-slide {
-                width: 100%;
-                height: 100%;
-            }
-
-            ::v-deep(.el-carousel__container),
-            ::v-deep(.el-carousel__item) {
-                height: 100%;
-            }
-
-            .qdata-scene {
-                position: relative;
-                overflow: hidden;
-                background: #eaf3ff;
-            }
-
-            .qdata-scene__canvas {
-                display: block;
-                width: 100%;
-                height: 100%;
-            }
-
-            .qdata-scene__cloud-route {
-                fill: none;
-                stroke: rgba(70, 196, 255, 0.68);
-                stroke-width: 2.2;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-dasharray: 1 5;
-                filter: drop-shadow(0 0 1px rgba(60, 190, 255, 0.2));
-            }
-
-            .qdata-scene__left-routes {
-                fill: none;
-                stroke: rgba(70, 196, 255, 0.68);
-                stroke-width: 2.2;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-dasharray: 1 5;
-                filter: drop-shadow(0 0 1px rgba(60, 190, 255, 0.2));
-            }
-
-            .qdata-scene__route-orb {
-                pointer-events: none;
-                filter: drop-shadow(0 0 5px rgba(65, 205, 255, 0.95));
-            }
-
-            .qdata-scene__route-orb-halo {
-                fill: url(#cloud-route-orb);
-            }
-
-            .qdata-scene__route-orb-core {
-                fill: #ffffff;
-                stroke: rgba(151, 235, 255, 0.95);
-                stroke-width: 1.5;
-            }
-
-            .qdata-scene__item {
-                pointer-events: none;
-                transform-box: fill-box;
-                transform-origin: center;
-                will-change: transform;
-                animation-duration: var(--float-duration);
-                animation-delay: var(--float-delay);
-                animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
-                animation-iteration-count: infinite;
-                animation-direction: alternate;
-            }
-
-            .qdata-scene__item--a { animation-name: qdata-float-a; }
-            .qdata-scene__item--b { animation-name: qdata-float-b; }
-            .qdata-scene__item--c { animation-name: qdata-float-c; }
-            .qdata-scene__item--d { animation-name: qdata-float-d; }
-            .qdata-scene__item--e { animation-name: qdata-float-e; }
-            .qdata-scene__item--f { animation-name: qdata-float-f; }
-            .qdata-scene__item--vertical-a { animation-name: qdata-float-vertical-a; }
-            .qdata-scene__item--vertical-b { animation-name: qdata-float-vertical-b; }
-            .qdata-scene__item--vertical-c { animation-name: qdata-float-vertical-c; }
-
-            .swiper-imagesize {
-                width: 100%;
-                height: 100%;
-                // object-fit: cover;
-            }
-
-            ::v-deep .swiper-pagination-bullets .swiper-pagination-bullet {
-                width: 36px;
-                height: 4px;
-                background: rgba(0, 0, 0, 0.5);
-                border-radius: 3px;
-                margin-bottom: 30px;
-                //opacity: 0.5;
-            }
-        }
-    }
-
-    .iconfont {
-        font-size: 17px !important;
-    }
-
-    .right-content {
-        width: 45%;
-        min-height: 750px;
-        background: #fff;
-        position: relative;
-        padding: 30px 0 20px 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .logo {
-            //width: 100px;
-            height: 33px;
-            margin-left: 20%;
-            display: flex;
-
-            img {
-                // width: 100%;
-                height: 100%;
-            }
-        }
-
-        .greeting {
-            margin-left: 20%;
-
-            .entry_period {
-                font-size: 25px;
-                font-weight: 400;
-                margin-bottom: 6px;
-                color: rgba(57, 63, 79, 1);
-            }
-
-            .entry_greeting {
-                font-size: 12px;
-                font-weight: 400;
-                color: #888;
-            }
-        }
-
-        .login-panel {
-            margin-left: 20%;
-            box-sizing: border-box;
-            margin-top: 30px;
-            width: 400px;
-            height: 400px;
-            box-shadow: -22px -22px 44px 0px rgba(255, 255, 255, 1),
-                22px 22px 44px 0px rgba(217, 217, 217, 1);
-            border-radius: 8px;
-            padding: 0 38px;
-            position: relative;
-            overflow: hidden;
-
-            ::v-deep .el-form-item {
-                margin-bottom: 20px;
-            }
-
-            .titles {
-                text-align: center;
-                line-height: 65px;
-                height: 65px;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-                font-size: 18px;
-                font-weight: bold;
-                color: #333;
-                margin-bottom: 30px;
-            }
-
-            .titles-bar {
-                width: 65px;
-                height: 2px;
-                background: #2666fb;
-                top: 66px;
-                position: absolute;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .code-class {
-                width: 63%;
-            }
-        }
-
-        ::v-deep .el-button--medium {
-            padding: 12px 20px;
-            // margin-top: 10px;
-        }
-
-        .description {
-            margin-top: 30px;
-            margin-left: 15%;
-
-            .contact {
-                font-size: 14px;
-                color: #666666;
-                display: flex;
-                align-items: center;
-                height: 42px;
-                line-height: 42px;
-                width: 173px;
-
-                img {
-                    width: 32px;
-                    height: 32px;
-                    margin-right: 16px;
-                }
-
-                p {
-                    height: 20px;
-                    line-height: 20px;
-                    font-size: 16px;
-                    // font-weight: 500px;
-                    color: #000000;
-                    margin: 0;
-                }
-
-                p:first-child {
-                    font-weight: 500px;
-                    font-size: 14px;
-                    color: #6d6d6d;
-                }
-            }
-        }
-
-        .chrome-wrap {
-            display: flex;
-            margin-left: 15%;
-            align-items: center;
-            margin-top: 8px;
-        }
-
-        .bottom-info {
-            margin-top: 20px;
-            margin-left: 15%;
-            height: 17px;
-            font-size: 12px;
-            font-weight: 400px;
-            left: 0px;
-            color: #6d6d6d;
-            line-height: 17px;
-            display: flex;
-            align-items: center;
-
-            .record {
-                cursor: pointer;
-                margin-left: 20px;
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
+  &:active {
+    transform: translateY(0);
+  }
 }
 
-@keyframes qdata-float-a {
-    0% { transform: translateY(0); }
-    19% { transform: translateY(-7px); }
-    47% { transform: translateY(-2px); }
-    73% { transform: translateY(5px); }
-    100% { transform: translateY(-5px); }
+/* ================= Dialog Style ================= */
+.fp-code-row {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+
+  .el-button {
+    width: 110px;
+  }
 }
 
-@keyframes qdata-float-b {
-    0% { transform: translateY(0); }
-    23% { transform: translateY(3px); }
-    51% { transform: translateY(-6px); }
-    78% { transform: translateY(2px); }
-    100% { transform: translateY(6px); }
-}
+/* ================= Responsive Breakpoints ================= */
+@media (max-width: 1080px) {
+  .login-left {
+    display: none;
+  }
 
-@keyframes qdata-float-c {
-    0% { transform: translateY(0); }
-    17% { transform: translateY(6px); }
-    42% { transform: translateY(-3px); }
-    69% { transform: translateY(-7px); }
-    100% { transform: translateY(3px); }
-}
-
-@keyframes qdata-float-d {
-    0% { transform: translateY(0); }
-    28% { transform: translateY(-5px); }
-    55% { transform: translateY(-1px); }
-    81% { transform: translateY(6px); }
-    100% { transform: translateY(2px); }
-}
-
-@keyframes qdata-float-e {
-    0% { transform: translateY(0); }
-    21% { transform: translateY(4px); }
-    49% { transform: translateY(7px); }
-    76% { transform: translateY(-4px); }
-    100% { transform: translateY(-6px); }
-}
-
-@keyframes qdata-float-f {
-    0% { transform: translateY(0); }
-    16% { transform: translateY(5px); }
-    38% { transform: translateY(-2px); }
-    67% { transform: translateY(-6px); }
-    86% { transform: translateY(3px); }
-    100% { transform: translateY(6px); }
-}
-
-@keyframes qdata-float-vertical-a {
-    0% { transform: translateY(0); }
-    18% { transform: translateY(-3px); }
-    43% { transform: translateY(2px); }
-    71% { transform: translateY(-4px); }
-    100% { transform: translateY(1px); }
-}
-
-@keyframes qdata-float-vertical-b {
-    0% { transform: translateY(0); }
-    24% { transform: translateY(3px); }
-    52% { transform: translateY(-4px); }
-    79% { transform: translateY(1px); }
-    100% { transform: translateY(-4px); }
-}
-
-@keyframes qdata-float-vertical-c {
-    0% { transform: translateY(0); }
-    16% { transform: translateY(-1px); }
-    39% { transform: translateY(3px); }
-    68% { transform: translateY(-4px); }
-    87% { transform: translateY(1px); }
-    100% { transform: translateY(-2px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .login-two .qdata-scene__item {
-        animation: none;
-    }
-
-    .login-two .qdata-scene__route-orb {
-        display: none;
-    }
-}
-</style>
-<style lang="scss" scoped>
-@media screen and (max-width: 1280px) {}
-
-@media screen and (max-width: 992px) {}
-
-@media screen and (max-width: 768px) {}
-
-@media screen and (max-width: 576px) {
-    .login-two {
-        min-width: 300px;
-
-        .left-content {
-            display: none;
-        }
-
-        .right-content {
-            width: 100%;
-            min-height: 300px;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 20px 14px 20px 14px;
-
-            .logo {
-                margin-left: 0;
-                text-align: center;
-            }
-
-            .greeting {
-                margin-left: 0;
-                margin-top: 20px;
-                text-align: center;
-
-                .entry_period {
-                    font-size: 16px;
-                }
-            }
-
-            .login-panel {
-                margin-left: 0;
-                margin-top: 20px;
-                width: auto;
-                height: 360px;
-                padding: 0 20px;
-                box-shadow: 5px 5px 10px 2px #eee;
-
-                .titles {
-                    margin: 0 0 20px 0;
-                }
-
-                .titles-bar {
-                    top: 48px;
-                }
-
-                .code-class {
-                    width: 55%;
-                }
-            }
-
-            .description {
-                width: 100%;
-                margin-left: 0;
-                margin-top: 10px;
-
-                .contact {
-                    width: 48%;
-
-                    img {
-                        width: 28px;
-                        height: 28px;
-                        margin-right: 12px;
-                    }
-
-                    p {
-                        font-size: 12px;
-                    }
-                }
-            }
-
-            .chrome-wrap {
-                margin-left: 0;
-                display: none;
-            }
-
-            .bottom-info {
-                margin-left: 0;
-                margin-top: 10px;
-                flex-direction: column;
-            }
-        }
-    }
-}
-
-.app-container {
-    padding: 0px;
-    margin: 0px;
-    background-color: #ffffff;
-    min-height: 100%;
+  .login-right {
+    flex: 1;
+    padding: 30px;
+  }
 }
 </style>
