@@ -28,7 +28,7 @@ public class CacheConstants
     /**
      * Login user redis key
      */
-    public static final String LOGIN_TOKEN_KEY = "login_tokens:";
+    public static final String LOGIN_TOKEN_KEY = "qdata_login_tokens:";
 
     /**
      * Verification code redis key
