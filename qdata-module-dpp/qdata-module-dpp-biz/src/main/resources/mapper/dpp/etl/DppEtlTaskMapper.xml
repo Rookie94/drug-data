@@ -208,7 +208,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                           ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
             WHERE
                 <choose>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        TO_NUMBER(
+                        REGEXP_SUBSTR(node.PARAMETERS,
+                        '"subTaskId"[[:space:]]*:[[:space:]]*([0-9]+)',
+                        1, 1, NULL, 1)
+                        )
+                    </when>
+                    <otherwise>
                         CAST(
                             SUBSTRING_INDEX(
                                 SUBSTRING_INDEX(
@@ -220,14 +227,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                 1
                             ) AS UNSIGNED
                         )
-                    </when>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                        TO_NUMBER(
-                        REGEXP_SUBSTR(node.PARAMETERS,
-                        '"subTaskId"[[:space:]]*:[[:space:]]*([0-9]+)',
-                        1, 1, NULL, 1)
-                        )
-                    </when>
+                    </otherwise>
                 </choose> = #{id}
         );
     </select>
@@ -250,12 +250,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                           ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
             WHERE
                 <choose>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
-                        CAST(
-                            JSON_UNQUOTE(JSON_EXTRACT(node.PARAMETERS, '$.datasourceId'))
-                            AS UNSIGNED
-                        )
-                    </when>
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
                                 TO_NUMBER(
                                 REGEXP_SUBSTR(node.PARAMETERS,
@@ -263,6 +257,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                 1, 1, NULL, 1)
                                 )
                     </when>
+                    <otherwise>
+                        CAST(
+                            JSON_UNQUOTE(JSON_EXTRACT(node.PARAMETERS, '$.datasourceId'))
+                            AS UNSIGNED
+                        )
+                    </otherwise>
                 </choose>
                         in
                         <foreach item="id" collection="datasourceIdList" open="(" separator="," close=")">
@@ -282,7 +282,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                         ON (node.CODE = rel.PRE_NODE_CODE OR node.CODE = rel.POST_NODE_CODE)
                 WHERE
                 <choose>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
+                        TO_NUMBER(
+                        REGEXP_SUBSTR(node.PARAMETERS,
+                        '"clmt"[[:space:]]*:[[:space:]]*"?([0-9]+)"?',
+                        1, 1, NULL, 1)
+                        )=1 AND
+                        TO_NUMBER(
+                        REGEXP_SUBSTR(node.PARAMETERS,
+                        '"asset_id_cpoy"[[:space:]]*:[[:space:]]*([0-9]+)',
+                        1, 1, NULL, 1)
+                        )
+                    </when>
+                    <otherwise>
                         CAST(
                             SUBSTRING_INDEX(
                                 SUBSTRING_INDEX(
@@ -306,19 +318,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                 1
                             ) AS UNSIGNED
                         )
-                    </when>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
-                        TO_NUMBER(
-                        REGEXP_SUBSTR(node.PARAMETERS,
-                        '"clmt"[[:space:]]*:[[:space:]]*"?([0-9]+)"?',
-                        1, 1, NULL, 1)
-                        )=1 AND
-                        TO_NUMBER(
-                        REGEXP_SUBSTR(node.PARAMETERS,
-                        '"asset_id_cpoy"[[:space:]]*:[[:space:]]*([0-9]+)',
-                        1, 1, NULL, 1)
-                        )
-                    </when>
+                    </otherwise>
                 </choose>
                            in
                           <foreach item="id" collection="assetIdList" open="(" separator="," close=")">
@@ -444,9 +444,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                             <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
                                 AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
                             </when>
-                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                            <otherwise>
                                 AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = 'FlinkStream'
-                            </when>
+                            </otherwise>
                         </choose>
                     </when>
                     <when test="params.processType == '2'.toString()">
@@ -454,9 +454,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                             <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
                                 AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
                             </when>
-                            <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                            <otherwise>
                                 AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') != 'FlinkStream'
-                            </when>
+                            </otherwise>
                         </choose>
                     </when>
                 </choose>
@@ -466,9 +466,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
                         AND JSON_VALUE(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
                     </when>
-                    <when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'mysql'">
+                    <otherwise>
                         AND JSON_EXTRACT(t.DRAFT_JSON, '$.typaCode') = #{params.datasourceType}
-                    </when>
+                    </otherwise>
                 </choose>
             </if>
         <if test="params.orderByColumn != null and params.orderByColumn != ''">

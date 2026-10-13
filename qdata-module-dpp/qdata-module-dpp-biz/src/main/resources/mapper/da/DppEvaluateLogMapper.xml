@@ -208,6 +208,27 @@
       ORDER BY d.d
       ]]>
             </when>
+            <otherwise>
+                <![CDATA[
+      WITH RECURSIVE d AS (
+        SELECT CURDATE() AS d
+        UNION ALL
+        SELECT DATE_SUB(d, INTERVAL 1 DAY) FROM d
+        WHERE d > DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+      )
+      SELECT
+        DATE_FORMAT(d.d, '%Y-%m-%d')        AS statDate,
+        COALESCE(SUM(t.TOTAL), 0)           AS totalCnt,
+        COALESCE(SUM(t.PROBLEM_TOTAL), 0)   AS problemCnt
+      FROM d
+      LEFT JOIN DPP_EVALUATE_LOG t
+        ON DATE(t.CHECK_DATE) = d.d
+       AND t.DEL_FLAG = '0'
+       AND t.VALID_FLAG = '1'
+      GROUP BY d.d
+      ORDER BY d.d
+      ]]>
+            </otherwise>
         </choose>
     </select>
 </mapper>

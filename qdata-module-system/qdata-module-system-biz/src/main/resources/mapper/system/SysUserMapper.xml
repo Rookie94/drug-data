@@ -89,6 +89,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'dm8'">
 				WM_CONCAT(r.ROLE_NAME) AS roleStr
 			</when>
+			<when test="@tech.qiantong.qdata.mybatis.config.MasterDataSourceConfig@getDatabaseType() == 'kingbase8'">
+				GROUP_CONCAT(r.ROLE_NAME) AS roleStr
+			</when>
+			<otherwise>
+				GROUP_CONCAT(r.ROLE_NAME) AS roleStr
+			</otherwise>
 		</choose>
 		FROM
 		system_role  r
