@@ -13,61 +13,8 @@
           <span>ENTERPRISE DATA PLATFORM</span>
         </div>
 
-        <h1 class="hero-title">企业级数据中台</h1>
+        <h1 class="hero-title">“一体两翼”信息化数据平台</h1>
         <p class="hero-subtitle">全域数据资产纳管 · 敏捷数据研发 · 统一数据服务治理</p>
-
-        <div class="features-list">
-          <div class="feature-item">
-            <div class="feature-icon icon-asset">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7c0-2-1.5-3-3.5-3h-9C5.5 4 4 5 4 7z" />
-                <path d="M9 8h6M9 12h6M9 16h4" />
-              </svg>
-            </div>
-            <div class="feature-text">
-              <div class="feature-heading">全域资产地图</div>
-              <div class="feature-sub">多源异构元数据自动采集与全景数据目录</div>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <div class="feature-icon icon-dev">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <polyline points="16 18 22 12 16 6" />
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-            </div>
-            <div class="feature-text">
-              <div class="feature-heading">敏捷数据研发</div>
-              <div class="feature-sub">低代码可视化 ETL 与高效数据流转集成</div>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <div class="feature-icon icon-security">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
-            </div>
-            <div class="feature-text">
-              <div class="feature-heading">数据安全合规</div>
-              <div class="feature-sub">敏感级别自动标注与动态脱敏全链路管控</div>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <div class="feature-icon icon-service">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="3" />
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-              </svg>
-            </div>
-            <div class="feature-text">
-              <div class="feature-heading">统一数据服务</div>
-              <div class="feature-sub">API 一键发布与微服务全周期调用监控</div>
-            </div>
-          </div>
-        </div>
 
         <div class="system-status-pill">
           <span class="status-dot"></span>
@@ -80,11 +27,6 @@
     <div class="login-right">
       <div class="login-card-container">
         <div class="login-card">
-          <div class="card-header">
-            <h2 class="welcome-heading">{{ td('login.greeting.greetingHello') }}，{{ greeting }}！</h2>
-            <p class="welcome-caption">{{ td('login.greeting.greetingMessage') }}</p>
-          </div>
-
           <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="auth-form">
             <el-form-item prop="username">
               <el-input
@@ -205,12 +147,10 @@ import { getCodeImg } from '@/api/system/login';
 import Cookies from 'js-cookie';
 import { encrypt, decrypt } from '@/utils/jsencrypt';
 import useUserStore from '@/store/system/user.js';
-import { useTimeGreeting } from '@/composables/useTimeGreeting';
 import { getContent } from '@/api/system/system/content';
 import defaultLogo from '@/assets/images/system/login/logo-qdata.png';
 
 const { td } = useDefaultLang();
-const { greeting } = useTimeGreeting();
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 
@@ -451,81 +391,7 @@ function handleFPCodeClick() {
   font-size: 16px;
   line-height: 1.6;
   color: #94a3b8;
-  margin: 0 0 42px 0;
-}
-
-.features-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-  margin-bottom: 40px;
-}
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 16px 18px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  transition: all 0.25s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.065);
-    border-color: rgba(96, 165, 250, 0.3);
-    transform: translateY(-2px);
-  }
-}
-
-.feature-icon {
-  flex-shrink: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  &.icon-asset {
-    background: rgba(37, 99, 235, 0.2);
-    color: #60a5fa;
-  }
-  &.icon-dev {
-    background: rgba(16, 185, 129, 0.2);
-    color: #34d399;
-  }
-  &.icon-security {
-    background: rgba(245, 158, 11, 0.2);
-    color: #fbbf24;
-  }
-  &.icon-service {
-    background: rgba(139, 92, 246, 0.2);
-    color: #a78bfa;
-  }
-}
-
-.feature-text {
-  flex: 1;
-}
-
-.feature-heading {
-  font-size: 14px;
-  font-weight: 600;
-  color: #f1f5f9;
-  margin-bottom: 4px;
-}
-
-.feature-sub {
-  font-size: 12px;
-  color: #94a3b8;
-  line-height: 1.45;
+  margin: 0 0 40px 0;
 }
 
 .system-status-pill {
@@ -567,23 +433,6 @@ function handleFPCodeClick() {
 .login-card {
   width: 100%;
   max-width: 410px;
-}
-
-.card-header {
-  margin-bottom: 32px;
-}
-
-.welcome-heading {
-  font-size: 26px;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0 0 8px 0;
-}
-
-.welcome-caption {
-  font-size: 14px;
-  color: #64748b;
-  margin: 0;
 }
 
 .auth-form {
